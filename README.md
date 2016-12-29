@@ -1,0 +1,1 @@
+Initial Readme. This repo will contain solutions implemented for different coding challenges from the Coursera Course Algorithms (initially part 1, and perhaps ultimately, part 2)
