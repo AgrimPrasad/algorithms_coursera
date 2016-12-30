@@ -70,7 +70,6 @@ public class QuickFindUF {
       uf.union(p, q);
       StdOut.println(p + " " + q);
   }
-  // TODO Correct bug for number of components
   StdOut.println("This system finally has " + uf.count() + " components.");
  }
 

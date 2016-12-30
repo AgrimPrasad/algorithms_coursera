@@ -34,19 +34,12 @@ public class QuickUnionUF {
  public void union(int p, int q) {    // add connection between p and q
   validate(p);
   validate(q);
-  // int pID = id[p];
-  // int qID = id[q];
 
   if (connected(p, q)) {
     StdOut.println(p + " and " + q + " have the same root!");
     return;
   }
 
-  // for (int i = 0; i < id.length; i++) {
-  //  if (id[i] == pID) {
-  //   id[i] = qID;
-  //  }
-  // }
   id[root(p)] = id[root(q)];
   count--;
   StdOut.println("This system now has " + count + " components.");
@@ -80,7 +73,6 @@ public class QuickUnionUF {
       uf.union(p, q);
       StdOut.println(p + " " + q);
   }
-  // TODO Correct bug for number of components
   StdOut.println("This system finally has " + uf.count() + " components.");
  }
 
