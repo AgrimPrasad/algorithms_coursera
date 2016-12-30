@@ -1,13 +1,15 @@
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 
-public class QuickUnionUF {
- private int[] id;        // id[i] = component identifier of i
+public class WeightedQuickUnionUF {
+ private int[] id;         // id[i] = component identifier of i
+ private int[] sz;         // size of trees, only stores sizes for roots
  private int count;        // number of components
 
- public QuickUnionUF(int n) {        // initialize by assigning every element to its own component
+ public WeightedQuickUnionUF(int n) {        // initialize by assigning every element to its own component
   count = n;
   id = new int[n];
+  sz = new int[n];
 
   for (int i = 0; i < n; i++) {
    id[i] = i;        
@@ -25,7 +27,6 @@ public class QuickUnionUF {
  private int root(int p) {
   while (id[p] != p) {
     p = id[p];
-    root(p);
   }
 
   return p;
@@ -35,12 +36,22 @@ public class QuickUnionUF {
   validate(p);
   validate(q);
 
-  if (connected(p, q)) {
+  int pRoot = root(p);
+  int qRoot = root(q);
+
+  if (pRoot == qRoot) {
     StdOut.println(p + " and " + q + " have the same root!");
     return;
   }
 
-  id[root(p)] = q;
+  if (sz[pRoot] < sz[qRoot]) {
+    id[pRoot] = qRoot;
+    sz[qRoot] += sz[pRoot];
+  } else {
+    id[qRoot] = pRoot;
+    sz[pRoot] += sz[qRoot];
+  }
+
   count--;
   StdOut.println("This system now has " + count + " components.");
 
@@ -63,7 +74,7 @@ public class QuickUnionUF {
 
  public static void main(String[] args) {
   int n = StdIn.readInt();
-  QuickUnionUF uf = new QuickUnionUF(n);
+  WeightedQuickUnionUF uf = new WeightedQuickUnionUF(n);
   while(!StdIn.isEmpty()) {
       int p = StdIn.readInt();
       int q = StdIn.readInt();
