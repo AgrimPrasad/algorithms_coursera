@@ -26,6 +26,7 @@ public class WeightedQuickUnionUF {
 
  private int root(int p) {
   while (id[p] != p) {
+    id[p] = id[id[p]]; //Point each node to its grandparent to halve tree length
     p = id[p];
   }
 
