@@ -28,16 +28,19 @@ public class QuickFindUF {
   int pID = id[p];
   int qID = id[q];
 
-  if (pID == qID) {
+  if (connected(p, q)) {
+    StdOut.println(p + " and " + q + " have the same id!");
     return;
   }
 
-  for (int i = 0; i < count; i++) {
+  for (int i = 0; i < id.length; i++) {
    if (id[i] == pID) {
     id[i] = qID;
    }
   }
   count--;
+  StdOut.println("This system now has " + count + " components.");
+
  }
 
  public int find(int p) {      // component identifier for p (0 to n-1)
@@ -61,12 +64,14 @@ public class QuickFindUF {
   while(!StdIn.isEmpty()) {
       int p = StdIn.readInt();
       int q = StdIn.readInt();
-      if (uf.connected(p, q)) continue;
+      if (uf.connected(p, q)) {
+        continue;
+      }
       uf.union(p, q);
       StdOut.println(p + " " + q);
   }
   // TODO Correct bug for number of components
-  StdOut.println("This system has " + uf.count() + " components.");
+  StdOut.println("This system finally has " + uf.count() + " components.");
  }
 
 }
