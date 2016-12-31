@@ -6,7 +6,8 @@ public class Percolation {
  private boolean[][] openSt;      // 2-D array for open Status of sites
  private int topVirtual;          // Virtual site connected to all elements in the first row (e.g. 0)
  private int botVirtual;          // Virtual site connected to all elements in the last row (e.g. n*n - 1)
- private WeightedQuickUnionUF uf; // private class for union-find
+ private WeightedQuickUnionUF uf; // union-find to check for percolation
+ private WeightedQuickUnionUF uf1; // union-find to check whether full
  private int numOpen = 0;         // number of open sites
  
  public Percolation(int n) {        // initialize by assigning every element to its own component
@@ -20,6 +21,7 @@ public class Percolation {
 
   int gridSize = n*n;
   uf = new WeightedQuickUnionUF(gridSize);
+  uf1 = new WeightedQuickUnionUF(gridSize);
   edgeLength = n;
   topVirtual = 0;
   botVirtual = gridSize - 1;
@@ -28,6 +30,7 @@ public class Percolation {
   // top row
   for (int i = 0; i < edgeLength; i++) {
     uf.union(topVirtual, i);
+    uf1.union(topVirtual, i);
   }
 
   // bottom row
@@ -60,24 +63,28 @@ public class Percolation {
             if (openSt[row][col - 1]) {
               int left1d = convert2dto1d(row, col - 1);
               uf.union(left1d, site1d);
+              uf1.union(left1d, site1d);
             }
             break;
         case 1:
             if (openSt[row - 1][col]) {
               int top1d = convert2dto1d(row - 1, col);
               uf.union(top1d, site1d);
+              uf1.union(top1d, site1d);
             }
             break;               
         case 2:
             if (openSt[row][col + 1]) {
               int right1d = convert2dto1d(row, col + 1);
               uf.union(right1d, site1d);
+              uf1.union(right1d, site1d);
             }
             break;
         case 3:
             if (openSt[row + 1][col]) {
               int bottom1d = convert2dto1d(row + 1, col);
               uf.union(bottom1d, site1d);
+              uf1.union(bottom1d, site1d);
             }
             break;
         default: break;
@@ -106,7 +113,7 @@ public class Percolation {
   validateGridIdx(row);
   validateGridIdx(col);
 
-  return openSt[row][col] && uf.connected(convert2dto1d(row, col), topVirtual);
+  return openSt[row][col] && uf1.connected(convert2dto1d(row, col), topVirtual);
  }
 
  // number of open sites
