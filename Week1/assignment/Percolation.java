@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
  private int edgeLength;          // User specified number of sites per edge of grid
@@ -146,75 +147,6 @@ public class Percolation {
   int n = edgeLength;
   if (p < 0 || p >= n) {
     throw new IndexOutOfBoundsException("index " + p + " is not between 0 and " + (n-1));
-  }
- }
-
- private class WeightedQuickUnionUF {
-  private int[] id;         // id[i] = component identifier of i
-  private int[] sz;         // size of trees, only stores sizes for roots
-  private int count;        // number of components
-
-  public WeightedQuickUnionUF(int n) {
-    count = n;
-    id = new int[n];
-    sz = new int[n];
-    for (int i = 0; i < n; i++) {
-        id[i] = i;
-        sz[i] = 1;
-    }
-  }
-
-  // make sure that p is a valid index for the component id array
-  private void validateId(int p) {
-   int n = id.length;
-   if (p < 0 || p >= n) {
-     throw new IndexOutOfBoundsException("index " + p + " is not between 0 and " + (n-1));
-   }
-  }
-
-  private int root(int p) {
-   while (id[p] != p) {
-     id[p] = id[id[p]]; // Point each node to its grandparent to halve tree length
-     p = id[p];
-   }
-   return p;
-  }
-
-  private void union(int p, int q) {    // add connection between p and q
-   validateId(p);
-   validateId(q);
-
-   int pRoot = root(p);
-   int qRoot = root(q);
-
-   if (pRoot == qRoot) {
-     return;
-   }
-
-   if (sz[pRoot] < sz[qRoot]) {
-     id[pRoot] = qRoot;
-     sz[qRoot] += sz[pRoot];
-   } else {
-     id[qRoot] = pRoot;
-     sz[pRoot] += sz[qRoot];
-   }
-
-   count--;
-  }
-
-  private int find(int p) {      // component identifier for p (0 to n-1)
-   validateId(p);
-   return id[p];
-  }
-
-  private boolean connected(int p, int q) {  // return true if p and q are in the same component
-   validateId(p);
-   validateId(q);
-   return root(p) == root(q);
-  }
-
-  private int count() {
-   return count;       // number of components
   }
  }
 
