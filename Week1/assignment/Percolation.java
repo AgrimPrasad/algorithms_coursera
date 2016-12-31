@@ -33,22 +33,6 @@ public class Percolation {
   for (int i = gridSize - edgeLength; i < gridSize; i++) {
     uf.union(botVirtual, i);
   }
-
-  // int idIdx = 0;
-  // for (int i = 0; i < gridSize; i++) { 
-  //     id[i] = i;
-
-  //     // if (i == 0) {             // top row
-  //     //   id[idIdx] = topVirtual;
-  //     // }
-  //     // else if (i == n - 1) {    // bottom row
-  //     //   id[idIdx] = botVirtual;
-  //     // }
-  //     // else {
-  //     //   id[idIdx] = idIdx;
-  //     // }
-  //     // idIdx++;
-  // }
  }
 
  // open site (row, col) if it is not open already
