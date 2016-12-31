@@ -9,7 +9,7 @@ public class Percolation {
  private int count;        // number of components
  private boolean[][] openSt;   // 2-D array for open Status of sites
 
- private int numOpen = 0;            // number of open sites
+ private int numOpen = 0;      // number of open sites
  private int topVirtual;       // Virtual site connected to all elements in the first row (e.g. 0)
  private int botVirtual;       // Virtual site connected to all elements in the last row (e.g. n*n - 1)
 
