@@ -119,7 +119,7 @@ public class Percolation {
   validateGridIdx(row);
   validateGridIdx(col);
 
-  return connected(convert2dto1d(row, col), topVirtual);
+  return openSt[row][col] && connected(convert2dto1d(row, col), topVirtual);
  }
 
  // number of open sites
@@ -237,13 +237,13 @@ public class Percolation {
   StdOut.println("Percolation Test after connection from top to bottom established: " + ufMin.percolates());
 
   try {
-    ufMin.open(-1,0);
+    ufMin.open(-1, 0);
   }
   catch (IndexOutOfBoundsException e) {
     StdOut.println("Error Caught! " + e.getMessage());
   }
   try {
-    ufMin.isOpen(-1,0);
+    ufMin.isOpen(-1, 0);
   }
   catch (IndexOutOfBoundsException e) {
     StdOut.println("Error Caught! " + e.getMessage());
