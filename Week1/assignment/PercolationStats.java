@@ -25,8 +25,8 @@ public class PercolationStats {
     for (int i = 0; i < trials; i++) {
       Percolation uf = new Percolation(n);
       while (!uf.percolates()) {
-        int leftRand = StdRandom.uniform(n);
-        int rightRand = StdRandom.uniform(n);
+        int leftRand = StdRandom.uniform(1, n + 1); // random integer uniformly in [a, b)
+        int rightRand = StdRandom.uniform(1, n + 1);
         uf.open(leftRand, rightRand);
       }
       pThresholds[i] = (uf.numberOfOpenSites() / gridSize);
