@@ -30,7 +30,6 @@ public class PercolationStats {
         uf.open(leftRand, rightRand);
       }
       pThresholds[i] = (uf.numberOfOpenSites() / gridSize);
-      StdOut.println("Percolation Threshold: " + pThresholds[i]);
     }
 
     mean = StdStats.mean(pThresholds);
