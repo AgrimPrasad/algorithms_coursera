@@ -1,6 +1,4 @@
-import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
-import java.lang.*;
 
 public class Percolation {
  private int edgeLength;   // User specified number of sites per edge of grid
@@ -53,10 +51,12 @@ public class Percolation {
 
  // open site (row, col) if it is not open already
  public void open(int row, int col) {
+  row = convertIdx(row);
+  col = convertIdx(col);
   validateGridIdx(row);
   validateGridIdx(col);
 
-  if (isOpen(row, col)) {
+  if (openSt[row][col]) {
     return;
   }
 
@@ -70,25 +70,25 @@ public class Percolation {
     try {
       switch (i) {
         case 0: 
-            if (isOpen(row, col - 1)) {
+            if (openSt[row][col - 1]) {
               int left1d = convert2dto1d(row, col - 1);
               union(left1d, site1d);
             }
             break;
         case 1:
-            if (isOpen(row - 1, col)) {
+            if (openSt[row - 1][col]) {
               int top1d = convert2dto1d(row - 1, col);
               union(top1d, site1d);
             }
             break;               
         case 2:
-            if (isOpen(row, col + 1)) {
+            if (openSt[row][col + 1]) {
               int right1d = convert2dto1d(row, col + 1);
               union(right1d, site1d);
             }
             break;
         case 3:
-            if (isOpen(row + 1, col)) {
+            if (openSt[row + 1][col]) {
               int bottom1d = convert2dto1d(row + 1, col);
               union(bottom1d, site1d);
             }
@@ -96,7 +96,7 @@ public class Percolation {
         default: break;
       }
     }
-    catch (IndexOutOfBoundsException e) { //indices not in 2d array
+    catch (IndexOutOfBoundsException e) { // indices not in 2d array
       continue;
     }
   }
@@ -104,14 +104,18 @@ public class Percolation {
 
  // is site (row, col) open?
  public boolean isOpen(int row, int col) {
+  row = convertIdx(row);
+  col = convertIdx(col);
   validateGridIdx(row);
   validateGridIdx(col);
 
-  return openSt[row][col] == true;
+  return openSt[row][col];
  }
 
  // is site (row, col) full?
  public boolean isFull(int row, int col) {
+  row = convertIdx(row);
+  col = convertIdx(col);
   validateGridIdx(row);
   validateGridIdx(col);
 
@@ -141,6 +145,11 @@ public class Percolation {
   return new int[]{row, col};
  }
 
+ // sample test data is 1-indexed rather than 0-indexed. Account for this
+ private int convertIdx(int idx) {
+  return idx - 1;
+ }
+
  // make sure that p is a valid index for 2-D grid
  private void validateGridIdx(int p) {
   int n = edgeLength;
@@ -159,7 +168,7 @@ public class Percolation {
 
  private int root(int p) {
   while (id[p] != p) {
-    id[p] = id[id[p]]; //Point each node to its grandparent to halve tree length
+    id[p] = id[id[p]]; // Point each node to its grandparent to halve tree length
     p = id[p];
   }
 
@@ -207,8 +216,8 @@ public class Percolation {
   int n = 4;
   Percolation uf = new Percolation(n);
 
-  for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
+  for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
       uf.open(i, j);
       StdOut.println("Open Test: " + uf.isOpen(i, j) + " for n = (" + i + "," + j + ")");
       StdOut.println("Full Test: " + uf.isFull(i, j) + " for n = (" + i + "," + j + ")");
@@ -218,13 +227,13 @@ public class Percolation {
   StdOut.println(uf.numberOfOpenSites() + " total sites open.");
 
   Percolation ufMin = new Percolation(n);
-  ufMin.open(0,1);
-  ufMin.open(1,1);
-  ufMin.open(2,1);
+  ufMin.open(1, 1);
+  ufMin.open(2, 2);
+  ufMin.open(3, 2);
   StdOut.println("Percolation Test before last row site opened: " + ufMin.percolates());
-  ufMin.open(3,1);
+  ufMin.open(4, 2);
   StdOut.println("Percolation Test after last row site opened: " + ufMin.percolates());
-  ufMin.open(1,0);
+  ufMin.open(2, 1);
   StdOut.println("Percolation Test after connection from top to bottom established: " + ufMin.percolates());
 
   try {

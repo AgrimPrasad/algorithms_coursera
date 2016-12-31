@@ -1,4 +1,3 @@
-import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import edu.princeton.cs.algs4.StdStats;
@@ -25,7 +24,7 @@ public class PercolationStats {
 
     for (int i = 0; i < trials; i++) {
       Percolation uf = new Percolation(n);
-      while(!uf.percolates()) {
+      while (!uf.percolates()) {
         int leftRand = StdRandom.uniform(n);
         int rightRand = StdRandom.uniform(n);
         uf.open(leftRand, rightRand);
