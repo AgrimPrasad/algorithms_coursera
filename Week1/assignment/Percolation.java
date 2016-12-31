@@ -129,7 +129,12 @@ public class Percolation {
 
  // does the system percolate?
  public boolean percolates() {
-  return connected(topVirtual, botVirtual);
+  if (edgeLength == 1) {
+    return openSt[0][0] && connected(topVirtual, botVirtual);
+  }
+  else {
+    return connected(topVirtual, botVirtual);
+  }
  }
 
  // 2-D coordinates to 1-D coordinates

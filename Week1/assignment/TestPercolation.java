@@ -6,7 +6,9 @@ public class TestPercolation {
  public static void main(String[] args) {
   int n = StdIn.readInt();
   Percolation uf = new Percolation(n);
-  StdOut.println("Full Test: " + uf.isFull(1, 1) + " for n = (" + 1 + "," + 1 + ")");
+  StdOut.println("Full Test: " + uf.isFull(1, 1) + " for n = (" + 1 + "," + 1 + ") after 0 sites opened");
+  StdOut.println("Percolation Test: " + uf.percolates() + " after 0 sites opened");
+
   while(!StdIn.isEmpty()) {
       int i = StdIn.readInt();
       int j = StdIn.readInt();
