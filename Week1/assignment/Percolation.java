@@ -28,24 +28,32 @@ public class Percolation {
   botVirtual = gridSize - 1;
   id = new int[gridSize];
   sz = new int[gridSize];
-  openSt = new boolean[n][n];
+  openSt = new boolean[n][n]; // default false, block all initially
 
-  int idIdx = 0;
+  // int idIdx = 0;
+  for (int i = 0; i < gridSize; i++) { 
+      id[i] = i;
+
+      // if (i == 0) {             // top row
+      //   id[idIdx] = topVirtual;
+      // }
+      // else if (i == n - 1) {    // bottom row
+      //   id[idIdx] = botVirtual;
+      // }
+      // else {
+      //   id[idIdx] = idIdx;
+      // }
+      // idIdx++;
+  }
+
+  // top row
   for (int i = 0; i < n; i++) {
-    for (int j = 0; j < n; j++) {
-      openSt[i][j] = false;     // block all initially
+    union(topVirtual, i);
+  }
 
-      if (i == 0) {             // top row
-        id[idIdx] = topVirtual;
-      }
-      else if (i == n - 1) {    // bottom row
-        id[idIdx] = botVirtual;
-      }
-      else {
-        id[idIdx] = idIdx;  
-      }
-      idIdx++;
-    }
+  // bottom row
+  for (int i = n*n - n; i < n; i++) {
+    union(botVirtual, i);
   }
  }
 
@@ -162,6 +170,8 @@ public class Percolation {
     throw new IndexOutOfBoundsException("index " + p + " is not between 0 and " + (n-1));
   }
  }
+
+ // private class WeightedQuickUnionUF {}
 
  // make sure that p is a valid index for the component id array
  private void validateId(int p) {
