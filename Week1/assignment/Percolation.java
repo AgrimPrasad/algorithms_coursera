@@ -1,5 +1,6 @@
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
+import java.lang.*;
 
 public class Percolation {
  private int edgeLength;   // User specified number of sites per edge of grid
@@ -9,18 +10,24 @@ public class Percolation {
  private boolean[][] openSt;   // 2-D array for open Status of sites
 
  private int numOpen = 0;            // number of open sites
- private int topVirtual = -1;       // Virtual site connected to all elements in the first row
- private int botVirtual = -2;       // Virtual site connected to all elements in the last row
- // private int invalidSite = -3;      // Needed when searching for an adjacent site
+ private int topVirtual;       // Virtual site connected to all elements in the first row (e.g. 0)
+ private int botVirtual;       // Virtual site connected to all elements in the last row (e.g. n*n - 1)
 
  public Percolation(int n) {        // initialize by assigning every element to its own component
-  if (n <=0) {
-        throw new IllegalArgumentException("Specified grid size " + n + " must be > 0");
+  if (n <= 0) {
+        throw new IllegalArgumentException("Specified edge length " + n + " must be > 0");
   }
 
-  int edgeLength = n;
+  if (n <= 0 || n > (Math.sqrt(Integer.MAX_VALUE / 4))) {
+        throw new IllegalArgumentException("Specified edge length " + n + " must not be so big that it can crash this program!");
+  }
+
   int gridSize = n*n;
+
+  edgeLength = n;
   count = gridSize;
+  topVirtual = 0;
+  botVirtual = gridSize - 1;
   id = new int[gridSize];
   sz = new int[gridSize];
   openSt = new boolean[n][n];
@@ -46,11 +53,15 @@ public class Percolation {
 
  // open site (row, col) if it is not open already
  public void open(int row, int col) {
+  validateGridIdx(row);
+  validateGridIdx(col);
+
   if (isOpen(row, col)) {
     return;
   }
 
   openSt[row][col] = true;
+  numOpen++;
 
   int site1d = convert2dto1d(row, col);
   boolean leftOpen = false, topOpen = false, rightOpen = false, bottomOpen = false;
@@ -89,35 +100,33 @@ public class Percolation {
       continue;
     }
   }
-
-
  }
 
  // is site (row, col) open?
  public boolean isOpen(int row, int col) {
+  validateGridIdx(row);
+  validateGridIdx(col);
+
   return openSt[row][col] == true;
  }
 
  // is site (row, col) full?
  public boolean isFull(int row, int col) {
-  return false;
+  validateGridIdx(row);
+  validateGridIdx(col);
+
+  return connected(convert2dto1d(row, col), topVirtual);
  }
 
  // number of open sites
  public int numberOfOpenSites() {
-  return 0;
+  return numOpen;
  }
 
  // does the system percolate?
  public boolean percolates() {
-  return false;
+  return connected(topVirtual, botVirtual);
  }
-
- // get left, top, right, bottom sites
- // public int[] getAdjacentSites(int p) {
- //  int left = p - 1;
- //  if ()
- // }
 
  // 2-D coordinates to 1-D coordinates
  private int convert2dto1d(int x, int y) {
@@ -132,8 +141,16 @@ public class Percolation {
   return new int[]{row, col};
  }
 
- // validate that p is a valid index for the component id array
- private void validate(int p) {
+ // make sure that p is a valid index for 2-D grid
+ private void validateGridIdx(int p) {
+  int n = edgeLength;
+  if (p < 0 || p >= n) {
+    throw new IndexOutOfBoundsException("index " + p + " is not between 0 and " + (n-1));
+  }
+ }
+
+ // make sure that p is a valid index for the component id array
+ private void validateId(int p) {
   int n = id.length;
   if (p < 0 || p >= n) {
     throw new IndexOutOfBoundsException("index " + p + " is not between 0 and " + (n-1));
@@ -150,8 +167,8 @@ public class Percolation {
  }
 
  private void union(int p, int q) {    // add connection between p and q
-  validate(p);
-  validate(q);
+  validateId(p);
+  validateId(q);
 
   int pRoot = root(p);
   int qRoot = root(q);
@@ -175,13 +192,13 @@ public class Percolation {
  }
 
  private int find(int p) {      // component identifier for p (0 to n-1)
-  validate(p);
+  validateId(p);
   return id[p];
  }
 
  private boolean connected(int p, int q) {  // return true if p and q are in the same component
-  validate(p);
-  validate(q);
+  validateId(p);
+  validateId(q);
   return root(p) == root(q);
  }
 
@@ -197,7 +214,45 @@ public class Percolation {
     for (int j = 0; j < n; j++) {
       uf.open(i, j);
       StdOut.println("Open Test: " + uf.isOpen(i, j) + " for n = (" + i + "," + j + ")");
+      StdOut.println("Full Test: " + uf.isFull(i, j) + " for n = (" + i + "," + j + ")");
+      StdOut.println("Percolation Test: " + uf.percolates() + " after n = (" + i + "," + j + ")");
     }
+  }
+  StdOut.println(uf.numberOfOpenSites() + " total sites open.");
+
+  Percolation ufMin = new Percolation(n);
+  ufMin.open(0,1);
+  ufMin.open(1,1);
+  ufMin.open(2,1);
+  StdOut.println("Percolation Test before last row site opened: " + ufMin.percolates());
+  ufMin.open(3,1);
+  StdOut.println("Percolation Test after last row site opened: " + ufMin.percolates());
+  ufMin.open(1,0);
+  StdOut.println("Percolation Test after connection from top to bottom established: " + ufMin.percolates());
+
+  try {
+    ufMin.open(-1,0);
+  }
+  catch (IndexOutOfBoundsException e) {
+    StdOut.println("Error Caught! " + e.getMessage());
+  }
+  try {
+    ufMin.isOpen(-1,0);
+  }
+  catch (IndexOutOfBoundsException e) {
+    StdOut.println("Error Caught! " + e.getMessage());
+  }
+  try {
+    Percolation ufNeg = new Percolation(-1);
+  }
+  catch (IllegalArgumentException e) {
+    StdOut.println("Error Caught! " + e.getMessage());
+  }
+  try {
+    Percolation ufNeg = new Percolation(2397*5555);
+  }
+  catch (IllegalArgumentException e) {
+    StdOut.println("Error Caught! " + e.getMessage());
   }
  }
 
