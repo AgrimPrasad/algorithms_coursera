@@ -15,11 +15,11 @@ public class Percolation {
 
  public Percolation(int n) {        // initialize by assigning every element to its own component
   if (n <= 0) {
-        throw new IllegalArgumentException("Specified edge length " + n + " must be > 0");
+    throw new IllegalArgumentException("Specified edge length " + n + " must be > 0");
   }
 
-  if (n <= 0 || n > (Math.sqrt(Integer.MAX_VALUE / 4))) {
-        throw new IllegalArgumentException("Specified edge length " + n + " must not be so big that it can crash this program!");
+  if (n > (Math.sqrt(Integer.MAX_VALUE / 4))) {
+    throw new IllegalArgumentException("Specified edge length " + n + " must not be so big that it can crash this program!");
   }
 
   int gridSize = n*n;
@@ -174,7 +174,6 @@ public class Percolation {
   int qRoot = root(q);
 
   if (pRoot == qRoot) {
-    StdOut.println(p + " and " + q + " have the same root!");
     return;
   }
 
@@ -187,8 +186,6 @@ public class Percolation {
   }
 
   count--;
-  StdOut.println("This system now has " + count + " components.");
-
  }
 
  private int find(int p) {      // component identifier for p (0 to n-1)

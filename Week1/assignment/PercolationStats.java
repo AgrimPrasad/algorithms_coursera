@@ -1,27 +1,62 @@
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
+import edu.princeton.cs.algs4.StdStats;
 
 public class PercolationStats {
+  private double mean = 0;
+  private double stddev = 0;
+  private double confidenceLo = 0;
+  private double confidenceHi = 0;
+  private double[] pThresholds;
+
   // perform trials independent experiments on an n-by-n grid
   public PercolationStats(int n, int trials) {
+    if (n <= 0 || trials <= 0) {
+      throw new IllegalArgumentException("Specified edge length " + n + " and trials " + trials + " must be > 0");
+    }
 
+    if (trials > (Integer.MAX_VALUE / 4)) {
+      throw new IllegalArgumentException("Specified trials " + trials + " must not be so big that it can crash this program!");
+    }
+
+    double gridSize = n*n;
+    pThresholds = new double[trials];
+
+    for (int i = 0; i < trials; i++) {
+      Percolation uf = new Percolation(n);
+      while(!uf.percolates()) {
+        int leftRand = StdRandom.uniform(n);
+        int rightRand = StdRandom.uniform(n);
+        uf.open(leftRand, rightRand);
+      }
+      pThresholds[i] = (uf.numberOfOpenSites() / gridSize);
+      StdOut.println("Percolation Threshold: " + pThresholds[i]);
+    }
+
+    mean = StdStats.mean(pThresholds);
+    stddev = StdStats.stddev(pThresholds);
+
+    double confidenceFactor = (1.96*stddev)/Math.sqrt(trials);
+    confidenceLo = mean - confidenceFactor;
+    confidenceHi = mean + confidenceFactor;
   }
 
   // sample mean of percolation threshold
   public double mean() {
-    return 0;
+    return mean;
   }
   // sample standard deviation of percolation threshold
   public double stddev() {
-    return 0;
+    return stddev;
   }
   // low  endpoint of 95% confidence interval
   public double confidenceLo() {
-    return 0;
+    return confidenceLo;
   }
   // high endpoint of 95% confidence interval
   public double confidenceHi() {
-    return 0;
+    return confidenceHi;
   }
 
   public static void main(String[] args) {
