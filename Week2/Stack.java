@@ -25,10 +25,10 @@ public class Stack<Item> implements Iterable<Item> {
 
 	public Item pop() {
 		if (isEmpty()) throw new NoSuchElementException("Stack underflow");
-		Node oldFirst = first;
+		Item oldFirst = first.item;
 		first = first.next;
 		this.numElements--;
-		return oldFirst.item;
+		return oldFirst;
 	}
 
 	public boolean isEmpty() {

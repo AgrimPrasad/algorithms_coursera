@@ -28,7 +28,7 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 	}
 
 	public Item dequeue() {
-		if (isEmpty()) throw new NoSuchElementException("Stack underflow");
+		if (isEmpty()) throw new NoSuchElementException("Queue underflow");
 		Item dequeuedElement = stackArray[head++];
 		stackArray[head - 1] = null;
 		if (head - tail == stackArray.length / 4) {
@@ -45,10 +45,10 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 		return tail - head;
 	}
 
-	// Returns (but does not remove) the item most recently added to the queue
+	// Returns (but does not remove) the item least recently added to the queue
 	public Item peek() {
-		if (isEmpty()) throw new NoSuchElementException("Stack underflow");
-		return stackArray[tail - 1];
+		if (isEmpty()) throw new NoSuchElementException("Queue underflow");
+		return stackArray[head];
 	}
 
 	public Iterator<Item> iterator() {
