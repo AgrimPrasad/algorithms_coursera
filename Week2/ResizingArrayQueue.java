@@ -29,7 +29,7 @@ public class ResizingArrayQueue<Item> implements Iterable<Item> {
 
 	public Item dequeue() {
 		if (isEmpty()) throw new NoSuchElementException("Stack underflow");
-		Item dequeuedElement = stackArray[head--];
+		Item dequeuedElement = stackArray[head++];
 		stackArray[head - 1] = null;
 		if (head - tail == stackArray.length / 4) {
 			resize(stackArray.length / 2);
