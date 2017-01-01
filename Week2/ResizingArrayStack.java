@@ -22,12 +22,6 @@ public class ResizingArrayStack<Item> implements Iterable<Item> {
 		stackArray[numElements++] = item;
 		if (numElements == stackArray.length) {
 			resize(stackArray.length * 2);
-		// 	Item[] copyArray = (Item[]) new Object[capacity * 2];
-		// 	for (int i = 0; i < capacity; i++) {
-		// 		copyArray[i] = stackArray[i];
-		// 	}
-		// 	stackArray = copyArray;
-		// 	capacity *= 2;
 		}
 	}
 
@@ -37,12 +31,6 @@ public class ResizingArrayStack<Item> implements Iterable<Item> {
 		stackArray[numElements + 1] = null;
 		if (numElements == stackArray.length / 4) {
 			resize(stackArray.length / 2);
-			// Item[] copyArray = (Item[]) new Object[capacity / 2];
-			// for (int i = 0; i < capacity / 4; i++) {
-			// 	copyArray[i] = stackArray[i];
-			// }
-			// stackArray[numElements + 1] = null;		// to prevent loitering
-			// capacity /= 4;
 		}
 		return poppedElement;
 	}
