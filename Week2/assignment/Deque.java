@@ -52,6 +52,7 @@ public class Deque<Item> implements Iterable<Item> {
     	if (isEmpty()) throw new NoSuchElementException("Deque underflow");
 		Item oldHead = head.item;
 		head = head.next;
+		if (numElements > 1) head.previous = null;
 		this.numElements--;
 		if (isEmpty()) tail = null;		// to prevent loitering
 
@@ -65,7 +66,8 @@ public class Deque<Item> implements Iterable<Item> {
 		Item oldTail = tail.item;
 		tail = tail.previous;
 		this.numElements--;
-		if (isEmpty()) head = null;		// to prevent loitering
+		if (isEmpty()) head = null;				// to prevent loitering
+		if (numElements == 1) head.next = null; // to prevent loitering
 
 		check();
 		return oldTail;
@@ -101,7 +103,10 @@ public class Deque<Item> implements Iterable<Item> {
         else if (numElements == 1) {
             assert head != null;
             assert head.next == null;
-            assert head == tail;
+            assert head.previous == null;
+            assert tail != null;
+            assert tail.next == null;
+            assert tail.previous == null;
         }
         else {
             assert head != null;
@@ -109,6 +114,7 @@ public class Deque<Item> implements Iterable<Item> {
             assert head.next != null;
             assert tail.next == null;
             assert head.previous == null;
+            assert tail.previous != null;
         }
 
         // check internal consistency of instance variable numElements
