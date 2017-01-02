@@ -6,6 +6,7 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import com.javamex.classmexer.MemoryUtil;
 
 public class TestDeque {
 	private TestDeque() { } // cannot be instantiated
@@ -247,6 +248,32 @@ public class TestDeque {
 		assert dq.isEmpty();
 	}
 
+	public static void memoryTest() {
+		Deque<Integer> dq = new Deque<>();
+
+		for (int i = 0; i < 500; i++) {
+			int firstNum = StdRandom.uniform(1000);
+			int lastNum = StdRandom.uniform(1000);
+			dq.addFirst(firstNum);
+			dq.addLast(lastNum);
+		}
+
+		long noBytesthousandObj = MemoryUtil.deepMemoryUsageOf(dq);
+
+		StdOut.println("Memory used with 1000 objects = " + noBytesthousandObj + " bytes.");
+
+		// Test that Memory used <= 48n + 192
+		assert noBytesthousandObj <= 48*1000 + 192;
+
+		for (int i = 0; i < 250; i++) {
+			dq.removeFirst();
+			dq.removeLast();
+		}
+
+		// Test that Memory used <= 48n + 192
+		assert noBytesthousandObj <= 48*500 + 192;
+	}
+
 	public static void main(String[] args) {
 		StdOut.println("Testing isEmpty()");
 		isEmptyTest();
@@ -262,6 +289,8 @@ public class TestDeque {
 		removeLastTest();
 		StdOut.println("Testing iterator()");
 		iteratorTest();
+		StdOut.println("Testing memory usage");
+		memoryTest();
 		StdOut.println("All tests passed.");
 	}
 }
