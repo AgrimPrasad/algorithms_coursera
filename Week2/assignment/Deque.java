@@ -19,7 +19,7 @@ public class Deque<Item> implements Iterable<Item> {
 		this.tail = null;
 		numElements = 0;
 
-		assert check();
+		check();
 	}
 
 	// add the item to the front
@@ -32,7 +32,7 @@ public class Deque<Item> implements Iterable<Item> {
 			oldHead.previous = head;
 		}
 		numElements++;
-		assert check();
+		check();
 	}
 
 	// add the item to the end
@@ -55,7 +55,7 @@ public class Deque<Item> implements Iterable<Item> {
 		this.numElements--;
 		if (isEmpty()) tail = null;		// to prevent loitering
 
-		assert check();
+		check();
 		return oldHead;
     }
     
@@ -67,7 +67,7 @@ public class Deque<Item> implements Iterable<Item> {
 		this.numElements--;
 		if (isEmpty()) head = null;		// to prevent loitering
 
-		assert check();
+		check();
 		return oldTail;
     }
 
@@ -89,28 +89,26 @@ public class Deque<Item> implements Iterable<Item> {
 		return new ListIterator();
 	}
 
-	// check internal invariants
-    private boolean check() {
+	// check internal invariants with asserts
+    private void check() {
 
         // check a few properties of instance variable 'head'
-        if (numElements < 0) {
-            return false;
-        }
+        assert numElements >= 0;
         if (numElements == 0) {
-            if (head != null) return false;
-            if (tail != null) return false;
+            assert head == null;
+            assert tail == null;
         }
         else if (numElements == 1) {
-            if (head == null)      return false;
-            if (head.next != null) return false;
-            if (head != tail) return false;
+            assert head != null;
+            assert head.next == null;
+            assert head == tail;
         }
         else {
-            if (head == null)      return false;
-            if (tail == null)	   return false;
-            if (head.next == null) return false;
-            if (tail.next != null) return false;
-            if (head.previous != null) return false;
+            assert head != null;
+            assert tail != null;
+            assert head.next != null;
+            assert tail.next == null;
+            assert head.previous == null;
         }
 
         // check internal consistency of instance variable numElements
@@ -118,9 +116,7 @@ public class Deque<Item> implements Iterable<Item> {
         for (Node x = head; x != null && numberOfNodes <= numElements; x = x.next) {
             numberOfNodes++;
         }
-        if (numberOfNodes != numElements) return false;
-
-        return true;
+        assert numberOfNodes == numElements;
     }
 
 	private class Node {
