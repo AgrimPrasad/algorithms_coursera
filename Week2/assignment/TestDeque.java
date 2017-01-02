@@ -3,6 +3,7 @@
 
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -116,11 +117,135 @@ public class TestDeque {
 		assert dq.removeFirst() == 100;
 	}
 
-	public static void removeFirstTest() { }
+	public static void removeFirstTest() {
+		Deque<Double> dq = new Deque<>();
 
-	public static void removeLastTest() { }
+		try {
+			dq.removeFirst();
+		}
+		catch (NoSuchElementException e) { }
 
-	public static void iteratorTest() { }
+		dq.addFirst(32.33);
+		assert dq.removeFirst() == 32.33;
+
+		dq.addLast(-100.32);
+		assert dq.removeFirst() == -100.32;
+
+		dq.addFirst(50.0);
+		dq.addLast(75.0);
+		dq.addFirst(0.0);
+		dq.addLast(100.0);
+		assert dq.removeFirst() == 0.0;
+		assert dq.removeFirst() == 50.0;
+		assert dq.removeFirst() == 75.0;
+		assert dq.removeFirst() == 100.0;
+
+		try {
+			dq.removeFirst();
+		}
+		catch (NoSuchElementException e) { }
+	}
+
+	public static void removeLastTest() {
+		Deque<Double> dq = new Deque<>();
+
+		try {
+			dq.removeLast();
+		}
+		catch (NoSuchElementException e) { }
+
+		dq.addFirst(32.33);
+		assert dq.removeLast() == 32.33;
+
+		dq.addLast(-100.32);
+		assert dq.removeLast() == -100.32;
+
+		dq.addLast(75.0);
+		dq.addFirst(50.0);
+		dq.addFirst(0.0);
+		dq.addLast(100.0);
+		assert dq.removeLast() == 100.0;
+		assert dq.removeLast() == 75.0;
+		assert dq.removeLast() == 50.0;
+		assert dq.removeLast() == 0.0;
+
+		try {
+			dq.removeFirst();
+		}
+		catch (NoSuchElementException e) { }
+	}
+
+	public static void iteratorTest() {
+		Deque<Integer> dq = new Deque<>();
+		Iterator<Integer> iter = dq.iterator();
+
+		assert iter != null;
+		assert iter.hasNext() == false;
+		try {
+			iter.next();
+		}
+		catch (NoSuchElementException e) { }
+		try {
+			iter.remove();
+		}
+		catch (UnsupportedOperationException e) { }
+
+		try {
+			for (int i : dq) {
+				assert dq.isEmpty();
+			}
+		}
+		catch (NoSuchElementException e) { }
+
+		int firstElement = 1001;
+		for (int i = 0; i < 500; i++) {
+			int firstNum = StdRandom.uniform(1000);
+			int lastNum = StdRandom.uniform(1000);
+			dq.addFirst(firstNum);
+			dq.addLast(lastNum);
+
+			if (i == 0) firstElement = firstNum;
+		}
+
+		for (int j : dq) {
+			assert j >= 0 && j < 1000;
+		}
+
+		assert iter != null;
+		assert iter.hasNext() == false;
+		try {
+			iter.next();
+		}
+		catch (NoSuchElementException e) { }
+		try {
+			iter.remove();
+		}
+		catch (UnsupportedOperationException e) { }
+
+		assert dq.size() == 1000;
+
+		Iterator<Integer> iter1 = dq.iterator();
+
+		while (iter1.hasNext()) {
+			int nextItem = iter1.next();
+			assert nextItem >= 0 && nextItem < 1000;
+		}
+
+		for (int i = 0; i < 500; i++) {
+			dq.removeFirst();
+			dq.removeLast();
+		}
+
+		try {
+			for (int i : dq) {
+				assert dq.isEmpty();
+			}
+		}
+		catch (NoSuchElementException e) { }
+
+		assert dq.size() == 0;
+		assert dq.isEmpty();
+	}
 
 	public static void main(String[] args) {
 		StdOut.println("Testing isEmpty()");
@@ -131,6 +256,12 @@ public class TestDeque {
 		addFirstTest();
 		StdOut.println("Testing addLast()");
 		addLastTest();
+		StdOut.println("Testing removeFirst()");
+		removeFirstTest();
+		StdOut.println("Testing removeLast()");
+		removeLastTest();
+		StdOut.println("Testing iterator()");
+		iteratorTest();
 		StdOut.println("All tests passed.");
 	}
 }

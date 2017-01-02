@@ -65,9 +65,9 @@ public class Deque<Item> implements Iterable<Item> {
     	if (isEmpty()) throw new NoSuchElementException("Deque underflow");
 		Item oldTail = tail.item;
 		tail = tail.previous;
+		if (tail != null) tail.next = null;		// to prevent loitering
 		this.numElements--;
 		if (isEmpty()) head = null;				// to prevent loitering
-		if (numElements == 1) head.next = null; // to prevent loitering
 
 		check();
 		return oldTail;
