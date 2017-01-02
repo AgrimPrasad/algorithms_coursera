@@ -20,7 +20,7 @@ public class Deque<Item> implements Iterable<Item> {
 		this.tail = null;
 		numElements = 0;
 
-		check();
+		// check();
 	}
 
 	// add the item to the front
@@ -34,7 +34,7 @@ public class Deque<Item> implements Iterable<Item> {
 			oldHead.previous = head;
 		}
 		numElements++;
-		check();
+		// check();
 	}
 
 	// add the item to the end
@@ -48,7 +48,7 @@ public class Deque<Item> implements Iterable<Item> {
 			oldTail.next = tail;
 		}
 		numElements++;
-		check();
+		// check();
     }  
     
     // remove and return the item from the front
@@ -60,7 +60,7 @@ public class Deque<Item> implements Iterable<Item> {
 		this.numElements--;
 		if (isEmpty()) tail = null;		// to prevent loitering
 
-		check();
+		// check();
 		return oldHead;
     }
     
@@ -73,7 +73,7 @@ public class Deque<Item> implements Iterable<Item> {
 		this.numElements--;
 		if (isEmpty()) head = null;				// to prevent loitering
 
-		check();
+		// check();
 		return oldTail;
     }
 
@@ -90,38 +90,38 @@ public class Deque<Item> implements Iterable<Item> {
 	}
 
 	// check internal invariants with asserts
-    private void check() {
+    // private void check() {
 
-        // check a few properties of instance variable 'head'
-        assert numElements >= 0;
-        if (numElements == 0) {
-            assert head == null;
-            assert tail == null;
-        }
-        else if (numElements == 1) {
-            assert head != null;
-            assert head.next == null;
-            assert head.previous == null;
-            assert tail != null;
-            assert tail.next == null;
-            assert tail.previous == null;
-        }
-        else {
-            assert head != null;
-            assert tail != null;
-            assert head.next != null;
-            assert tail.next == null;
-            assert head.previous == null;
-            assert tail.previous != null;
-        }
+    //     // check a few properties of instance variable 'head'
+    //     assert numElements >= 0;
+    //     if (numElements == 0) {
+    //         assert head == null;
+    //         assert tail == null;
+    //     }
+    //     else if (numElements == 1) {
+    //         assert head != null;
+    //         assert head.next == null;
+    //         assert head.previous == null;
+    //         assert tail != null;
+    //         assert tail.next == null;
+    //         assert tail.previous == null;
+    //     }
+    //     else {
+    //         assert head != null;
+    //         assert tail != null;
+    //         assert head.next != null;
+    //         assert tail.next == null;
+    //         assert head.previous == null;
+    //         assert tail.previous != null;
+    //     }
 
-        // check internal consistency of instance variable numElements
-        int numberOfNodes = 0;
-        for (Node x = head; x != null && numberOfNodes <= numElements; x = x.next) {
-            numberOfNodes++;
-        }
-        assert numberOfNodes == numElements;
-    }
+    //     // check internal consistency of instance variable numElements
+    //     int numberOfNodes = 0;
+    //     for (Node x = head; x != null && numberOfNodes <= numElements; x = x.next) {
+    //         numberOfNodes++;
+    //     }
+    //     assert numberOfNodes == numElements;
+    // }
 
 	private class Node {
 		private Item item;

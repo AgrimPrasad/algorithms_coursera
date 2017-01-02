@@ -22,7 +22,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		this.numElements = 0;
 		this.numElementsWithNulls = 0;
 
-		check();
+		// check();
 	}
 
 	// add the item
@@ -34,7 +34,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 			resize(stackArray.length * 2);
 		}
 
-		check();
+		// check();
 	}
 
 	// remove and return a random item
@@ -45,7 +45,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 			resize(stackArray.length / 2);
 		}
 
-		check();
+		// check();
 		assert poppedElement != null;
 		return poppedElement;
 	}
@@ -135,16 +135,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 	}
 
 	// check internal invariants with asserts
-    private void check() {
-        assert numElements >= 0;
-        if (numElements == 0) {
-            assert stackArray.length <= 4;
-        }
-        else {
-        	assert numElements >= stackArray.length / 4;
-        	assert numElements <= stackArray.length;
-        }
-    }
+    // private void check() {
+    //     assert numElements >= 0;
+    //     if (numElements == 0) {
+    //         assert stackArray.length <= 4;
+    //     }
+    //     else {
+    //     	assert numElements >= stackArray.length / 4;
+    //     	assert numElements <= stackArray.length;
+    //     }
+    // }
 
 	public static void main(String[] args) {
 		// String filenames[] = {
