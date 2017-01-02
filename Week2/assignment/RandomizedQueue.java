@@ -144,13 +144,6 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         	assert numElements >= stackArray.length / 4;
         	assert numElements <= stackArray.length;
         }
-
-        // check internal consistency of instance variable numElements
-        // int numberOfNodes = 0;
-        // for (Node x = head; x != null && numberOfNodes <= numElements; x = x.next) {
-        //     numberOfNodes++;
-        // }
-        // assert numberOfNodes == numElements;
     }
 
 	public static void main(String[] args) {
