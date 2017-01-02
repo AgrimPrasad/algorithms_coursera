@@ -74,8 +74,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
 	private Item randomItemSelector(boolean pop) {
 		if (isEmpty()) throw new NoSuchElementException("Queue underflow");
-		int randomIdx = StdRandom.uniform(0, numElementsWithNulls);
-		while (stackArray[randomIdx] == null) randomIdx = StdRandom.uniform(0, numElementsWithNulls);
+		int randomIdx = StdRandom.uniform(0, numElementsWithNulls + 1);
+		while (stackArray[randomIdx] == null) {
+			randomIdx = StdRandom.uniform(0, numElementsWithNulls + 1);
+		}
 		Item randomItem = stackArray[randomIdx];
 		if (pop) {
 			stackArray[randomIdx] = null;	// prevent loitering

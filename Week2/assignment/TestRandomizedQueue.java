@@ -116,6 +116,17 @@ public class TestRandomizedQueue {
 		}
 		catch (NoSuchElementException e) { }
 
+		dq.enqueue(100);
+		dq.enqueue(-100);
+		dq.enqueue(-1000);
+		assert dq.size() == 3;
+		dq.dequeue();
+		assert dq.size() == 2;
+		dq.dequeue();
+		assert dq.size() == 1;
+		dq.dequeue();
+		assert dq.size() == 0;
+
 		boolean dequeued100 = false;
 		boolean dequeuedneg100 = false;
 		boolean dequeuedneg1000 = false;
@@ -123,9 +134,13 @@ public class TestRandomizedQueue {
 			dq.enqueue(100);
 			dq.enqueue(-100);
 			dq.enqueue(-1000);
+			assert dq.size() == 3;
 			int randomItem = dq.dequeue();
+			assert dq.size() == 2;
 			dq.dequeue();
+			assert dq.size() == 1;
 			dq.dequeue();
+			assert dq.size() == 0;
 			switch (randomItem) {
 				case 100: dequeued100 = true;
 						  break;
@@ -133,6 +148,7 @@ public class TestRandomizedQueue {
 						  break;
 				case -1000: dequeuedneg1000 = true;
 						  break;
+				default:  break;
 			}
 		}
 		assert dequeued100;
