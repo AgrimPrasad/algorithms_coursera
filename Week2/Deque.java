@@ -1,8 +1,8 @@
-// Deque: FIFO/LIFO collection (generalization of stack + queue)
+// Deque: FIFO/LIFO collection (generalization of stack + queue with doubly linked list)
 
-// Linked list based generic Deque. Deque.java implements 
-// a generic linked list Deque. enDeque() to the tail of the linked list
-// and deDeque() from the front of the linked list
+// Doubly Linked list based generic Deque. Deque.java implements 
+// a generic doubly linked list Deque. addLast(), removeLast() to the tail of the linked list
+// and addFirst(), removeFirst() from the front of the linked list
 
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
@@ -17,24 +17,39 @@ public class Deque<Item> implements Iterable<Item> {
 	public Deque() {
 		this.head = null;
 		this.tail = null;
+		numElements = 0;
 
 		assert check();
 	}
 
-	public void enDeque(Item item) {
+	// add the item to the front
+	public void addFirst(Item item) {
 		if (isEmpty()) {
-			head = tail = new Node(item, null);
+			head = tail = new Node(item, null, null);
 		} else {
-			Node oldTail = tail;
-			tail = new Node(item, null);
-			oldTail.next = tail;
+			Node oldHead = head;
+			head = new Node(item, null, oldHead);
+			oldHead.previous = head;
 		}
 		numElements++;
 		assert check();
 	}
 
-	public Item deDeque() {
-		if (isEmpty()) throw new NoSuchElementException("Deque underflow");
+	// add the item to the end
+    public void addLast(Item item)	{
+    	if (isEmpty()) {
+			head = tail = new Node(item, null, null);
+		} else {
+			Node oldTail = tail;
+			tail = new Node(item, oldTail, null);
+			oldTail.next = tail;
+		}
+		numElements++;
+    }  
+    
+    // remove and return the item from the front
+    public Item removeFirst()	{
+    	if (isEmpty()) throw new NoSuchElementException("Deque underflow");
 		Item oldHead = head.item;
 		head = head.next;
 		this.numElements--;
@@ -42,10 +57,22 @@ public class Deque<Item> implements Iterable<Item> {
 
 		assert check();
 		return oldHead;
-	}
+    }
+    
+    // remove and return the item from the end
+    public Item removeLast()	{
+    	if (isEmpty()) throw new NoSuchElementException("Deque underflow");
+		Item oldTail = tail.item;
+		tail = tail.previous;
+		this.numElements--;
+		if (isEmpty()) head = null;		// to prevent loitering
+
+		assert check();
+		return oldTail;
+    }
 
 	public boolean isEmpty() {
-		return head == null;
+		return numElements == 0;
 	}
 
 	public int size() {
@@ -59,7 +86,7 @@ public class Deque<Item> implements Iterable<Item> {
 	}
 
 	public Iterator<Item> iterator() {
-		return new LinkedListIterator();
+		return new ListIterator();
 	}
 
 	// check internal invariants
@@ -70,7 +97,8 @@ public class Deque<Item> implements Iterable<Item> {
             return false;
         }
         if (numElements == 0) {
-            if (head != null || tail != null) return false;
+            if (head != null) return false;
+            if (tail != null) return false;
         }
         else if (numElements == 1) {
             if (head == null)      return false;
@@ -78,9 +106,11 @@ public class Deque<Item> implements Iterable<Item> {
             if (head != tail) return false;
         }
         else {
-            if (head == null || tail == null)      return false;
+            if (head == null)      return false;
+            if (tail == null)	   return false;
             if (head.next == null) return false;
             if (tail.next != null) return false;
+            if (head.previous != null) return false;
         }
 
         // check internal consistency of instance variable numElements
@@ -95,18 +125,20 @@ public class Deque<Item> implements Iterable<Item> {
 
 	private class Node {
 		private Item item;
+		private Node previous;
 		private Node next;
 
 		public Node() { }
 
-		public Node(Item item, Node next) {
+		public Node(Item item, Node previous, Node next) {
 			this.item = item;
+			this.previous = previous;
 			this.next = next;
 		}
 	}
 
-	// hasNext(), next(), remove()->not implemented
-	private class LinkedListIterator implements Iterator<Item> {
+	// return an iterator over items in order from front to end
+	private class ListIterator implements Iterator<Item> {
 		private Node i = head;
 
 		public boolean hasNext() {
@@ -129,8 +161,9 @@ public class Deque<Item> implements Iterable<Item> {
 		Deque<String> Deque = new Deque<String>();
         while (!StdIn.isEmpty()) {
             String item = StdIn.readString();
-            if (!item.equals("-")) Deque.enDeque(item);
-            else if (!Deque.isEmpty()) StdOut.print(Deque.deDeque() + " ");
+            // StdOut.println("Incoming item: " + item + "\n");
+            if (!item.equals("-")) Deque.addFirst(item);
+            else if (!Deque.isEmpty()) StdOut.print(Deque.removeLast() + " ");
         }
         StdOut.println("(" + Deque.size() + " left on Deque)");
 	}
