@@ -101,6 +101,12 @@ public class TestDeque {
 
 		dq.addFirst(-1000);
 		assert dq.removeFirst() == -1000;
+
+		//Negative test: add null item
+		try {
+			dq.addFirst(null);
+		}
+		catch (NullPointerException e) { }
 	}
 
 	public static void addLastTest() {
@@ -116,6 +122,12 @@ public class TestDeque {
 
 		dq.addLast(-1000);
 		assert dq.removeFirst() == 100;
+
+		//Negative test: add null item
+		try {
+			dq.addLast(null);
+		}
+		catch (NullPointerException e) { }
 	}
 
 	public static void removeFirstTest() {
@@ -270,8 +282,10 @@ public class TestDeque {
 			dq.removeLast();
 		}
 
+		long noBytes500Obj = MemoryUtil.deepMemoryUsageOf(dq);
+		StdOut.println("Memory used with 500 objects = " + noBytes500Obj + " bytes.");
 		// Test that Memory used <= 48n + 192
-		assert noBytesthousandObj <= 48*500 + 192;
+		assert noBytes500Obj <= 48*500 + 192;
 	}
 
 	public static void main(String[] args) {
