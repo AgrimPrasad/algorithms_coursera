@@ -47,6 +47,7 @@ public class Deque<Item> implements Iterable<Item> {
 			oldTail.next = tail;
 		}
 		numElements++;
+		check();
     }  
     
     // remove and return the item from the front
@@ -81,12 +82,6 @@ public class Deque<Item> implements Iterable<Item> {
 
 	public int size() {
 		return numElements;
-	}
-
-	// Returns (but does not remove) the item least recently added to the Deque
-	public Item peek() {
-		if (isEmpty()) throw new NoSuchElementException("Deque underflow");
-		return head.item;
 	}
 
 	public Iterator<Item> iterator() {
