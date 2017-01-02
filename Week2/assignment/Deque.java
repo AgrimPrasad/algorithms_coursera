@@ -4,7 +4,7 @@
 // a generic doubly linked list Deque. addLast(), removeLast() to the tail of the linked list
 // and addFirst(), removeFirst() from the front of the linked list
 
-import edu.princeton.cs.algs4.In;
+// import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import java.util.Iterator;
@@ -158,39 +158,39 @@ public class Deque<Item> implements Iterable<Item> {
 	}
 
 	public static void main(String[] args) {
-		String filenames[] = {
-								// "data/tale.txt",
-								// "data/mediumTale.txt",
-								"data/tinyTale.txt"
-							};
+		// String filenames[] = {
+		// 						// "data/tale.txt",
+		// 						// "data/mediumTale.txt",
+		// 						"data/tinyTale.txt"
+		// 					};
 
-		for (String filename : filenames) {
-			In in = new In(filename);
+		// for (String filename : filenames) {
+		// 	In in = new In(filename);
 
-			Deque<String> dq = new Deque<>();
-			boolean first = true;
-			while (!in.isEmpty()) {
-				String item = in.readString();
-				if (first) {
-					dq.addFirst(item);
-				}
-				else {
-					dq.addLast(item);
-				}
-				first = !first;
-			}
+		// 	Deque<String> dq = new Deque<>();
+		// 	boolean first = true;
+		// 	while (!in.isEmpty()) {
+		// 		String item = in.readString();
+		// 		if (first) {
+		// 			dq.addFirst(item);
+		// 		}
+		// 		else {
+		// 			dq.addLast(item);
+		// 		}
+		// 		first = !first;
+		// 	}
 
-			int dqSize = dq.size();
-			for (int i = 0; i < dqSize; i++) {
-				if (first) {
-					StdOut.println(dq.removeFirst());
-				}
-				else {
-					StdOut.println(dq.removeLast());
-				}
-				first = !first;
-			}
+		// 	int dqSize = dq.size();
+		// 	for (int i = 0; i < dqSize; i++) {
+		// 		if (first) {
+		// 			StdOut.println(dq.removeFirst());
+		// 		}
+		// 		else {
+		// 			StdOut.println(dq.removeLast());
+		// 		}
+		// 		first = !first;
+		// 	}
 
-		}
+		// }
 	}
 }

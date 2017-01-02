@@ -4,7 +4,7 @@
 // a generic resizing randomized queue whose size doubles when the array gets full
 // and halves when the array is one-quarter full.
 
-import edu.princeton.cs.algs4.In;
+// import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.StdRandom;
@@ -147,26 +147,26 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
 	public static void main(String[] args) {
-		String filenames[] = {
-								// "data/tale.txt",
-								// "data/mediumTale.txt",
-								"data/tinyTale.txt"
-							};
+		// String filenames[] = {
+		// 						// "data/tale.txt",
+		// 						// "data/mediumTale.txt",
+		// 						"data/tinyTale.txt"
+		// 					};
 
-		for (String filename : filenames) {
-			In in = new In(filename);
+		// for (String filename : filenames) {
+		// 	In in = new In(filename);
 
-			RandomizedQueue<String> dq = new RandomizedQueue<>();
-			while (!in.isEmpty()) {
-				String item = in.readString();
-				dq.enqueue(item);
-			}
+		// 	RandomizedQueue<String> dq = new RandomizedQueue<>();
+		// 	while (!in.isEmpty()) {
+		// 		String item = in.readString();
+		// 		dq.enqueue(item);
+		// 	}
 
-			int dqSize = dq.size();
-			for (int i = 0; i < dqSize; i++) {
-				StdOut.println(dq.dequeue());
-			}
+		// 	int dqSize = dq.size();
+		// 	for (int i = 0; i < dqSize; i++) {
+		// 		StdOut.println(dq.dequeue());
+		// 	}
 
-		}
+		// }
 	}
 }
