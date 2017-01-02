@@ -40,7 +40,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 	public Item dequeue() {
 		if (isEmpty()) throw new NoSuchElementException("Stack underflow");
 		Item poppedElement = randomItemSelector(true);
-		if (stackArray.length >= 4 && numElements == stackArray.length / 4) {
+		if (stackArray.length >= 4 && (numElements == stackArray.length / 4)) {
 			resize(stackArray.length / 2);
 		}
 
@@ -90,9 +90,16 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		assert newCapacity >= this.numElements;
 
 		Item[] copyArray = (Item[]) new Object[newCapacity];
-		for (int i = 0, j = 0; i < numElementsWithNulls; i++, j++) {
-			if (stackArray[i] == null) i++;
-			copyArray[j] = stackArray[i];
+
+		for (int i = 0, j = 0; i < numElementsWithNulls;) {
+			if (stackArray[i] == null) {
+				i++;
+			}
+			else {
+				copyArray[j] = stackArray[i];
+				i++;
+				j++;
+			}
 		}
 		stackArray = copyArray;
 		numElementsWithNulls = numElements;	//Reset as no nulls between 0 & numElements in new array

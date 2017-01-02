@@ -199,10 +199,6 @@ public class TestRandomizedQueue {
 			if (i == 0) firstElement = firstNum;
 		}
 
-		for (int j : dq) {
-			assert j >= 0 && j < 1000;
-		}
-
 		assert iter != null;
 		assert iter.hasNext() == false;
 		try {
@@ -216,11 +212,11 @@ public class TestRandomizedQueue {
 
 		assert dq.size() == 1000;
 
-		Iterator<Integer> iter1 = dq.iterator();
-
-		while (iter1.hasNext()) {
-			int nextItem = iter1.next();
-			assert nextItem >= 0 && nextItem < 1000;
+		for (int i : dq) {
+			assert i >= 0 && i < 1000;
+			for (int j : dq) {
+				assert j >= 0 && j < 1000; 
+			}
 		}
 
 		for (int i = 0; i < 500; i++) {
@@ -239,7 +235,55 @@ public class TestRandomizedQueue {
 		assert dq.isEmpty();
 	}
 
-	public static void sampleTest() { throw new UnsupportedOperationException(); }
+	public static void sampleTest() { 
+		RandomizedQueue<Integer> dq = new RandomizedQueue<>();
+
+		try {
+			dq.sample();
+		}
+		catch (NoSuchElementException e) { }
+
+		dq.enqueue(100);
+		assert dq.sample() == 100;
+
+		dq.dequeue();
+		try {
+			dq.sample();
+		}
+		catch (NoSuchElementException e) { }
+
+		boolean dequeued100 = false;
+		boolean dequeuedneg100 = false;
+		boolean dequeuedneg1000 = false;
+		int expectedSize = 0;
+		for (int i = 0; i < 100; i++) {
+			dq.enqueue(100);
+			dq.enqueue(-100);
+			dq.enqueue(-1000);
+
+			expectedSize += 3;
+			assert dq.size() == expectedSize;
+			int randomItem = dq.sample();
+			assert dq.size() == expectedSize;
+			dq.sample();
+			assert dq.size() == expectedSize;
+			dq.sample();
+			assert dq.size() == expectedSize;
+			switch (randomItem) {
+				case 100: dequeued100 = true;
+						  break;
+				case -100: dequeuedneg100 = true;
+						  break;
+				case -1000: dequeuedneg1000 = true;
+						  break;
+				default:  break;
+			}
+		}
+		assert dequeued100;
+		assert dequeuedneg100;
+		assert dequeuedneg1000; // probabilistically, all should be true
+		assert dq.size() == expectedSize;
+	}
 
 	public static void memoryTest() {
 		RandomizedQueue<Integer> dq = new RandomizedQueue<>();
@@ -278,8 +322,10 @@ public class TestRandomizedQueue {
 		enqueueTest();
 		StdOut.println("Testing dequeue()");
 		dequeueTest();
-		// StdOut.println("Testing iterator()");
-		// iteratorTest();
+		StdOut.println("Testing sample()");
+		sampleTest();
+		StdOut.println("Testing iterator()");
+		iteratorTest();
 		// StdOut.println("Testing memory usage");
 		// memoryTest();
 		StdOut.println("All tests passed.");
