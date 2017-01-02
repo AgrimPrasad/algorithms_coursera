@@ -326,8 +326,8 @@ public class TestRandomizedQueue {
 		sampleTest();
 		StdOut.println("Testing iterator()");
 		iteratorTest();
-		// StdOut.println("Testing memory usage");
-		// memoryTest();
+		StdOut.println("Testing memory usage");
+		memoryTest();
 		StdOut.println("All tests passed.");
 	}
 }
