@@ -87,21 +87,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		return randomItem;
 	}
 
+	private Item[] copyElementsToArray(Item[] targetArray) {
+		Item[] copyArray = targetArray;
+		for (int i = 0, j = 0; i < numElementsWithNulls;i++) {
+			if (stackArray[i] == null) continue;
+			else {
+				copyArray[j] = stackArray[i];
+				j++;
+			}
+		}
+
+		return copyArray;
+	}
+
 	private void resize(int newCapacity) {
 		assert newCapacity >= this.numElements;
 
 		Item[] copyArray = (Item[]) new Object[newCapacity];
-
-		for (int i = 0, j = 0; i < numElementsWithNulls;) {
-			if (stackArray[i] == null) {
-				i++;
-			}
-			else {
-				copyArray[j] = stackArray[i];
-				i++;
-				j++;
-			}
-		}
+		copyArray = copyElementsToArray(copyArray);
 		stackArray = copyArray;
 		numElementsWithNulls = numElements;	//Reset as no nulls between 0 & numElements in new array
 	}
@@ -113,35 +116,10 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		private int idx = 0;
 		private Item[] randomElementsArray;
 
-		// private Item[] randomIteratorGen() {
-		// 	if (isEmpty()) throw new NoSuchElementException("Queue underflow");
-		// 	int[] randomIdxUsed = new int[numElementsWithNulls + 1];
-		// 	int randomIdx = StdRandom.uniform(0, numElementsWithNulls + 1);
-		// 	while (stackArray[randomIdx] == null && ) {
-		// 		randomIdx = StdRandom.uniform(0, numElementsWithNulls + 1);
-		// 	}
-		// 	Item randomItem = stackArray[randomIdx];
-		// 	if (pop) {
-		// 		stackArray[randomIdx] = null;	// prevent loitering
-		// 		numElements--;
-		// 	}
-		// 	return randomItem;
-		// }
-
 		private RandomArrayIterator() {
 			numIterElements = numElements;
 			randomElementsArray = (Item[]) new Object[numIterElements];
-
-			for (int i = 0, j = 0; i < numElementsWithNulls;) {
-				if (stackArray[i] == null) {
-					i++;
-				}
-				else {
-					randomElementsArray[j] = stackArray[i];
-					i++;
-					j++;
-				}
-			}
+			randomElementsArray = copyElementsToArray(randomElementsArray);
 			StdRandom.shuffle(randomElementsArray);
 		}
 
