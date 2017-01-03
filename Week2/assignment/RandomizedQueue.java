@@ -14,13 +14,11 @@ import java.util.NoSuchElementException;
 public class RandomizedQueue<Item> implements Iterable<Item> {
 	private Item[] stackArray;
 	private int numElements;
-	private int numElementsWithNulls;
 
 	// construct an empty randomized queue
 	public RandomizedQueue() {
 		stackArray = (Item[]) new Object[2]; // generic array creation disallowed in Java
 		this.numElements = 0;
-		this.numElementsWithNulls = 0;
 
 		// check();
 	}
@@ -28,9 +26,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 	// add the item
 	public void enqueue(Item item) {
     	if (item == null) throw new NullPointerException("Cannot add a null item.");
-		stackArray[numElementsWithNulls++] = item;
-		numElements++;
-		if (numElementsWithNulls == stackArray.length) {
+		stackArray[numElements++] = item;
+		if (numElements == stackArray.length) {
 			resize(stackArray.length * 2);
 		}
 
@@ -40,8 +37,11 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 	// remove and return a random item
 	public Item dequeue() {
 		if (isEmpty()) throw new NoSuchElementException("Stack underflow");
-		Item poppedElement = randomItemSelector(true);
-		if (stackArray.length >= 4 && (numElements == stackArray.length / 4)) {
+		// Item poppedElement = randomItemSelector(true);
+		int randomIdx = StdRandom.uniform(0, numElements);
+		Item poppedElement = stackArray[randomIdx];
+		stackArray[randomIdx] = stackArray[--numElements];
+		if (numElements > 0 && numElements == stackArray.length / 4) {
 			resize(stackArray.length / 2);
 		}
 
@@ -63,7 +63,8 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 	// return (but do not remove) a random item
 	public Item sample() {
 		if (isEmpty()) throw new NoSuchElementException("Queue underflow");
-		return randomItemSelector();
+		int randomIdx = StdRandom.uniform(0, numElements);
+		return stackArray[randomIdx];
 	}
 
 	// return an independent iterator over items in random order
@@ -71,42 +72,12 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		return new RandomArrayIterator();
 	}
 
-	private Item randomItemSelector() { return randomItemSelector(false);}
-
-	private Item randomItemSelector(boolean pop) {
-		if (isEmpty()) throw new NoSuchElementException("Queue underflow");
-		int randomIdx = StdRandom.uniform(0, numElementsWithNulls + 1);
-		while (stackArray[randomIdx] == null) {
-			randomIdx = StdRandom.uniform(0, numElementsWithNulls + 1);
-		}
-		Item randomItem = stackArray[randomIdx];
-		if (pop) {
-			stackArray[randomIdx] = null;	// prevent loitering
-			numElements--;
-		}
-		return randomItem;
-	}
-
-	private Item[] copyElementsToArray(Item[] targetArray) {
-		Item[] copyArray = targetArray;
-		for (int i = 0, j = 0; i < numElementsWithNulls;i++) {
-			if (stackArray[i] == null) continue;
-			else {
-				copyArray[j] = stackArray[i];
-				j++;
-			}
-		}
-
-		return copyArray;
-	}
-
 	private void resize(int newCapacity) {
 		assert newCapacity >= this.numElements;
 
 		Item[] copyArray = (Item[]) new Object[newCapacity];
-		copyArray = copyElementsToArray(copyArray);
+		System.arraycopy(stackArray, 0, copyArray, 0, numElements);
 		stackArray = copyArray;
-		numElementsWithNulls = numElements;	//Reset as no nulls between 0 & numElements in new array
 	}
 
 	// each iterator should return the same unique items, no items repeated
@@ -119,7 +90,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		private RandomArrayIterator() {
 			numIterElements = numElements;
 			randomElementsArray = (Item[]) new Object[numIterElements];
-			randomElementsArray = copyElementsToArray(randomElementsArray);
+			System.arraycopy(stackArray, 0, randomElementsArray, 0, numElements);
 			StdRandom.shuffle(randomElementsArray);
 		}
 
