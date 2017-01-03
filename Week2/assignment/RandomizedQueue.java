@@ -106,18 +106,43 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 		numElementsWithNulls = numElements;	//Reset as no nulls between 0 & numElements in new array
 	}
 
-	// hasNext(), next(), remove()->not implemented
+	// each iterator should return the same unique items, no items repeated
+	// each iterator should only order the items randomly 
 	private class RandomArrayIterator implements Iterator<Item> {
 		private int numIterElements;
 		private int idx = 0;
 		private Item[] randomElementsArray;
 
+		// private Item[] randomIteratorGen() {
+		// 	if (isEmpty()) throw new NoSuchElementException("Queue underflow");
+		// 	int[] randomIdxUsed = new int[numElementsWithNulls + 1];
+		// 	int randomIdx = StdRandom.uniform(0, numElementsWithNulls + 1);
+		// 	while (stackArray[randomIdx] == null && ) {
+		// 		randomIdx = StdRandom.uniform(0, numElementsWithNulls + 1);
+		// 	}
+		// 	Item randomItem = stackArray[randomIdx];
+		// 	if (pop) {
+		// 		stackArray[randomIdx] = null;	// prevent loitering
+		// 		numElements--;
+		// 	}
+		// 	return randomItem;
+		// }
+
 		private RandomArrayIterator() {
 			numIterElements = numElements;
 			randomElementsArray = (Item[]) new Object[numIterElements];
-			for (int i = 0; i < numIterElements; i++) {
-				randomElementsArray[i] = randomItemSelector();
+
+			for (int i = 0, j = 0; i < numElementsWithNulls;) {
+				if (stackArray[i] == null) {
+					i++;
+				}
+				else {
+					randomElementsArray[j] = stackArray[i];
+					i++;
+					j++;
+				}
 			}
+			StdRandom.shuffle(randomElementsArray);
 		}
 
 		public boolean hasNext() {
