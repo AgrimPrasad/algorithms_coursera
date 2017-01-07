@@ -21,7 +21,6 @@ public class Shell{
 					if (less(array[j], array[j - h])) exch(array, j, j - h);
 				}
 			}
-			StdOut.println(h);
 			assert isHSorted(array, h);
 			h = (h - 1) / 3;
 		}
