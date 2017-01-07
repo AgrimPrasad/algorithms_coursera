@@ -1,8 +1,9 @@
 import edu.princeton.cs.algs4.StdOut;
 
 public class TestSelection {
-	public void main() {
-		Selection<char> sel = new Selection<>("SORTEXAMPLE");
-		StdOut.println(sel.sort());
+	public static void main(String[] args) {
+		String[] comparableStr = new String[]{"blah", "a", "sorting", "me"};
+		Selection.sort(comparableStr);
+		Selection.show(comparableStr);
 	}
 }
