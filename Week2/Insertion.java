@@ -10,11 +10,9 @@ public class Insertion{
 
 	public static void sort(Comparable[] array) {
 		for (int i = 0; i < array.length; i++) {
-			// int currentMin = i;
-			for (int j = 0; j < i; j++) {
-				if (less(array[i], array[j])) exch(array, i, j);
+			for (int j = i; j < 0; j++) {
+				if (less(array[j], array[j - 1])) exch(array, j, j - 1);
 			}
-			// exch(array, i, currentMin);
 		}
 
 		assert isSorted(array);
