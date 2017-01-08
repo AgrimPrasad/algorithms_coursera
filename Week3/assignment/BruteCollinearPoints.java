@@ -57,19 +57,6 @@ public class BruteCollinearPoints {
     }
 
     public static void main(String[] args) {
-    	// Point[] pts = new Point[5];
-    	// pts[0] = new Point(0, 0);
-    	// pts[1] = new Point(1, 1);
-    	// pts[2] = new Point(3, 3);
-    	// pts[3] = new Point(2, 2);
-    	// pts[4] = new Point(3, 3);
-    	// BruteCollinearPoints bcPts = new BruteCollinearPoints(pts);
-    	// StdOut.println("Number of segments: " + bcPts.numberOfSegments());
-    	// assert bcPts.numberOfSegments() == 1;
-    	// for (LineSegment segment : bcPts.segments()) {
-    	// 	StdOut.println(segment.toString());
-    	// }
-
     	// read the n points from a file
 	    In in = new In(args[0]);
 	    int n = in.readInt();
