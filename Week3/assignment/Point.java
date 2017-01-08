@@ -60,7 +60,12 @@ public class Point implements Comparable<Point> {
      */
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
-        return 0.0;
+        double num = (double)that.y - (double) this.y;
+        double denom = (double)that.x - (double) this.x;
+        if (num == 0 && denom == 0) return Double.NEGATIVE_INFINITY;
+        else if (num != 0 && denom == 0) return Double.POSITIVE_INFINITY;
+        else if (denom != 0 && num == 0) return +0.0;
+        else return num / denom;
     }
 
     /**
@@ -88,9 +93,10 @@ public class Point implements Comparable<Point> {
      *
      * @return the Comparator that defines this ordering on points
      */
-    // public Comparator<Point> slopeOrder() {
-    //     /* YOUR CODE HERE */
-    // }
+    public Comparator<Point> slopeOrder() {
+        /* YOUR CODE HERE */
+        return new SlopeOrderComparator();
+    }
 
 
     /**
@@ -103,6 +109,17 @@ public class Point implements Comparable<Point> {
     public String toString() {
         /* DO NOT MODIFY */
         return "(" + x + ", " + y + ")";
+    }
+
+    private class SlopeOrderComparator implements Comparator<Point> {
+        @Override
+        public int compare(Point a, Point b) {
+            double aSlope = slopeTo(a);
+            double bSlope = slopeTo(b);
+            if (aSlope < bSlope) return -1;
+            else if (aSlope == bSlope) return 0;
+            else return 1;
+        }
     }
 
     /**
