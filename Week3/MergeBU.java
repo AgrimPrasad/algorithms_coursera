@@ -1,7 +1,7 @@
 import edu.princeton.cs.algs4.StdOut;
 
-public class Merge {
-	private Merge() { }	// cannot instantiate
+public class MergeBU {
+	private MergeBU() { }	// cannot instantiate
 
 	public static void show(Comparable[] a) {
 		for (int i = 0; i < a.length; i++) {
@@ -11,19 +11,38 @@ public class Merge {
 
 	public static void sort(Comparable[] a) { 
 		Comparable[] aux = new Comparable[a.length];
-		sort(a, aux, 0, a.length - 1);
-	}
-
-	private static void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
-		int mid = lo + (hi - lo) / 2;
-
-		if (hi <= lo) {						// base case
-			return;
+		// sort(a, aux, 0, a.length - 1);
+		// int lo = 0;
+		// int hi = 1;
+		// int mid = 0;
+		int n = a.length;
+		for (int sz = 1; sz < n; sz *= 2) {
+			StdOut.println(sz);
+			for (int lo = 0; lo < n - sz; lo += sz+sz) {
+				int hi = Math.min(lo + sz + sz - 1, n - 1);
+				int mid = lo + sz - 1;
+				merge(a, aux, lo, mid, hi);
+			}
+			// if (sz < n && sz * 2 > n) sz = n;
+			// else sz *= 2;
+			// mid = lo + (hi - lo) / 2;
+			// merge(a, aux, lo, mid, hi);
+			// lo += sz;
+			// hi += sz;
 		}
-		sort(a, aux, lo, mid);
-		sort(a, aux, mid + 1, hi);
-		merge(a, aux, lo, mid, hi);
+		assert isSorted(a);
 	}
+
+	// private static void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
+	// 	int mid = lo + (hi - lo) / 2;
+
+	// 	if (hi <= lo) {						// base case
+	// 		return;
+	// 	}
+	// 	sort(a, aux, lo, mid);
+	// 	sort(a, aux, mid + 1, hi);
+	// 	merge(a, aux, lo, mid, hi);
+	// }
 
 	private static void merge(Comparable[] a, Comparable[] aux, int lo, int mid, int hi) {
 		
@@ -81,7 +100,7 @@ public class Merge {
 
 	public static void main (String[] args) {
 		String[] comparableStr = new String[]{"blah", "a", "sorting", "me", "crap", "hello", "world", "hkust", "hkust", "b"};
-		Merge.sort(comparableStr);
-		Merge.show(comparableStr);
+		MergeBU.sort(comparableStr);
+		MergeBU.show(comparableStr);
 	}
 }
