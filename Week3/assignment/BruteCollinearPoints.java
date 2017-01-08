@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.In;
 
 public class BruteCollinearPoints {
 	private final ArrayList<LineSegment> segments = new ArrayList<>();
@@ -55,17 +57,44 @@ public class BruteCollinearPoints {
     }
 
     public static void main(String[] args) {
-    	Point[] pts = new Point[5];
-    	pts[0] = new Point(0, 0);
-    	pts[1] = new Point(1, 1);
-    	pts[2] = new Point(3, 3);
-    	pts[3] = new Point(2, 2);
-    	pts[4] = new Point(3, 3);
-    	BruteCollinearPoints bcPts = new BruteCollinearPoints(pts);
-    	StdOut.println("Number of segments: " + bcPts.numberOfSegments());
-    	assert bcPts.numberOfSegments() == 1;
-    	for (LineSegment segment : bcPts.segments()) {
-    		StdOut.println(segment.toString());
-    	}
+    	// Point[] pts = new Point[5];
+    	// pts[0] = new Point(0, 0);
+    	// pts[1] = new Point(1, 1);
+    	// pts[2] = new Point(3, 3);
+    	// pts[3] = new Point(2, 2);
+    	// pts[4] = new Point(3, 3);
+    	// BruteCollinearPoints bcPts = new BruteCollinearPoints(pts);
+    	// StdOut.println("Number of segments: " + bcPts.numberOfSegments());
+    	// assert bcPts.numberOfSegments() == 1;
+    	// for (LineSegment segment : bcPts.segments()) {
+    	// 	StdOut.println(segment.toString());
+    	// }
+
+    	// read the n points from a file
+	    In in = new In(args[0]);
+	    int n = in.readInt();
+	    Point[] points = new Point[n];
+	    for (int i = 0; i < n; i++) {
+	        int x = in.readInt();
+	        int y = in.readInt();
+	        points[i] = new Point(x, y);
+	    }
+
+	    // draw the points
+	    StdDraw.enableDoubleBuffering();
+	    StdDraw.setXscale(0, 32768);
+	    StdDraw.setYscale(0, 32768);
+	    for (Point p : points) {
+	        p.draw();
+	    }
+	    StdDraw.show();
+
+	    // print and draw the line segments
+	    BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+	    for (LineSegment segment : collinear.segments()) {
+	        StdOut.println(segment);
+	        segment.draw();
+	    }
+	    StdDraw.show();
     }
 }
